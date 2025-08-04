@@ -1,22 +1,29 @@
+from typing import Any
 from math import cos, sin, radians
+from src.shapes import Rectangle, unregularPoly
 import pyray
 
 pyray.init_window(800, 600, "2D Raytracer")
 pyray.set_target_fps(60)
 
-walls = [
+walls: list[tuple[tuple[int, int], tuple[int, int]]] = [
     ((100, 100), (700, 100)),
     ((700, 100), (700, 500)),
     ((700, 500), (100, 500)),
     ((100, 500), (100, 100)),
-    ((300, 300), (500, 400)),
-    ((500, 400), (300, 400)),
+    #((300, 300), (500, 400)),
+    #((500, 400), (300, 400)),
 ]
 
-ray_origin = (400, 300)
+shapes = [
+    Rectangle(200, 200, 100, 50, (128, 0, 255, 255)),
+    unregularPoly([(400, 300), (450, 350), (400, 400), (350, 350)], (128, 0, 255, 255))
+]
+
+ray_origin = pyray.Vector2(400, 300)
 
 
-def ray_segment_intersect(ro, rd, p1, p2):
+def ray_segment_intersect(ro, rd, p1, p2) -> tuple[float, float] | None:
     x1, y1 = p1
     x2, y2 = p2
     x3, y3 = ro
@@ -38,7 +45,8 @@ def ray_segment_intersect(ro, rd, p1, p2):
 
 def cast_rays(origin, walls, num_rays=360):
     hits = []
-    for angle in range(0, 360, 360 // num_rays):
+    for i in range(num_rays):
+        angle = i * (360 / num_rays)
         rd = (cos(radians(angle)), sin(radians(angle)))
         closest = None
         min_dist = float("inf")
@@ -49,6 +57,14 @@ def cast_rays(origin, walls, num_rays=360):
                 if dist < min_dist:
                     min_dist = dist
                     closest = hit
+        for shape in shapes:
+            for wall in shape.get_segments():
+                hit = ray_segment_intersect(origin, rd, *wall)
+                if hit:
+                    dist = (hit[0] - origin[0]) ** 2 + (hit[1] - origin[1]) ** 2
+                    if dist < min_dist:
+                        min_dist = dist
+                        closest = hit
         if closest:
             hits.append(closest)
     return hits
@@ -65,6 +81,9 @@ while not pyray.window_should_close():
         pyray.draw_line_ex(
             pyray.Vector2(*wall[0]), pyray.Vector2(*wall[1]), 2, pyray.WHITE
         )
+    
+    for shape in shapes:
+        shape.draw()
 
     # Draw rays
     hits = cast_rays((ray_origin.x, ray_origin.y), walls, 360)
@@ -76,6 +95,7 @@ while not pyray.window_should_close():
             pyray.YELLOW,
         )
         pyray.draw_circle(int(hit[0]), int(hit[1]), 2, pyray.RED)
+    
 
     pyray.end_drawing()
 
