@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Any
 from math import cos, sin, radians
 from src.shapes import Rectangle, unregularPoly
 import pyray
@@ -23,7 +23,7 @@ shapes = [
 ray_origin = pyray.Vector2(400, 300)
 
 
-def ray_segment_intersect(ro, rd, p1, p2) -> tuple[Any, Any] | None:
+def ray_segment_intersect(ro, rd, p1, p2) -> tuple[float, float] | None:
     x1, y1 = p1
     x2, y2 = p2
     x3, y3 = ro

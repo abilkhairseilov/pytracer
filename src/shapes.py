@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import override
 import pyray
 
 @dataclass
@@ -11,9 +10,8 @@ class Shape:
         pass  # Base drawing method
 
 class Rectangle(Shape):
-    def __init__(self, x: float, y: float, width: float, height: float, color: tuple[int, int, int, int] = (255, 255, 255, 255), rotation: float = 0.0):
+    def __init__(self, x: float, y: float, width: float, height: float, color: tuple[int, int, int, int] = (255, 255, 255, 255)):
         super().__init__((x, y), color)
-        self.rotation: float = rotation
         self.width: float = width
         self.height: float = height
         self.segments: list[tuple[tuple[float, float], tuple[float, float]]] = self._create_segments()
@@ -69,7 +67,7 @@ class unregularPoly(Shape):
         return self.segments
 
     def draw(self) -> None:
-        if len(self.points) < 3:
+        if len(self.points) >= 3:
             vertices = [pyray.Vector2(*point) for point in self.points]
             pyray.draw_triangle_fan(
                 vertices,
