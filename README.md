@@ -1,6 +1,6 @@
 # Pytracer
 
 todo:
-- [ ] fix gaps between rays
-- [ ] fix coloring inside unregular polygons
-- [ ] add light displacement, reflection, refraction etc
+- [ ] fix gaps between rays NOPE
+- [ ] fix coloring inside unregular polygons uhh idk
+- [ ] add light displacement, reflection, refraction etc NOPE

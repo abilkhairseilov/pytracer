@@ -171,8 +171,8 @@ while not pyray.window_should_close():
     # pyray.Color(255, 255, 200, alpha),
     # )
 
-    pyray.draw_rectangle(squareModeX, squareModeY, 167, 50, squareModeColor)
-    pyray.draw_text("Square mode", squareModeX + 20, squareModeY + 15, 20, pyray.WHITE)
+    pyray.draw_rectangle(squareModeX, squareModeY, 195, 50, squareModeColor)
+    pyray.draw_text("Place a square ", squareModeX + 20, squareModeY + 15, 20, pyray.WHITE)
 
     if (
         ray_origin.x < squareModeX
