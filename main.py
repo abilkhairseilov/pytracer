@@ -25,6 +25,10 @@ walls: list[tuple[tuple[int, int], tuple[int, int]]] = [
     # ((500, 400), (300, 400)),
 ]
 
+glassBreak = pyray.load_sound("static/glassbreak.mp3")
+pyray.init_audio_device()
+
+index = 0
 squareMode = False
 squareModeX = 810
 squareModeY = 200
@@ -32,9 +36,9 @@ squareModeColor = pyray.RED
 
 shapes = [
     Rectangle(200, 200, 100, 50, (255, 255, 255, 255)),
-    unregularPoly(
-        [(400, 300), (450, 350), (400, 400), (350, 350)], (255, 255, 255, 255)
-    ),
+    # unregularPoly(
+        # [(400, 300), (450, 350), (400, 400), (350, 350)], (255, 255, 255, 255)
+    # ),
 ]
 
 
@@ -204,9 +208,24 @@ while not pyray.window_should_close():
                 shapes.append(rect)
 
         ok = True
+
+    if pyray.is_key_pressed(pyray.KEY_R):
+        for shape in shapes:
+            index += 1
+            print(type(shape))
+            if isinstance(shape, Rectangle):
+                if (shape.x <= ray_origin.x <= shape.x + shape.width) and \
+                (shape.y <= ray_origin.y <= shape.y + shape.height):
+                    shapes.pop(index -1)
+                    pyray.play_sound(glassBreak)
+                    index = 0
+        index = 0
+
     for shape in shapes:
         shape.draw()
 
     pyray.end_drawing()
 
 pyray.close_window()
+pyray.unload_sound(glassBreak)
+pyray.close_audio_device()

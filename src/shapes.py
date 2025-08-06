@@ -11,13 +11,15 @@ class Shape:
 
 class Rectangle(Shape):
     def __init__(self, x: float, y: float, width: float, height: float, color: tuple[int, int, int, int] = (255, 255, 255, 255)):
-        super().__init__((x, y), color)
+        self.x = x
+        self.y = y
         self.width: float = width
         self.height: float = height
+        self.color = color
         self.segments: list[tuple[tuple[float, float], tuple[float, float]]] = self._create_segments()
     
     def _create_segments(self) -> list[tuple[tuple[float, float], tuple[float, float]]]:
-        x, y = self.position
+        x, y = self.x, self.y
         w, h = self.width, self.height
         return [
             ((x, y), (x + w, y)),          # top
@@ -31,7 +33,7 @@ class Rectangle(Shape):
     
     def draw(self) -> None:
         # Draw filled rectangle
-        x, y = self.position
+        x, y = self.x, self.y
         pyray.draw_rectangle(
             int(x),
             int(y),
