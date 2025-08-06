@@ -31,7 +31,7 @@ squareModeY = 200
 squareModeColor = pyray.RED
 
 shapes = [
-    Rectangle(200, 200, 100, 50, (255, 255, 255, 0)),
+    Rectangle(200, 200, 100, 50, (255, 255, 255, 255)),
     unregularPoly(
         [(400, 300), (450, 350), (400, 400), (350, 350)], (255, 255, 255, 255)
     ),
