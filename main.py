@@ -10,11 +10,12 @@ HEIGHT = 720
 pyray.init_window(WIDTH, HEIGHT, "2D Raytracer")
 pyray.set_target_fps(60)
 
-light = pyray.load_shader("", "static/light_mask.fs")
-light_pos_index = pyray.get_shader_location(light, "light_pos")
-max_radius_index = pyray.get_shader_location(light, "max_radius")
-num_points_index = pyray.get_shader_location(light, "num_points")
-points_index = pyray.get_shader_location(light, "points")
+# broken shader loading here
+# light = pyray.load_shader("", "static/light_mask.fs")
+# light_pos_index = pyray.get_shader_location(light, "light_pos")
+# max_radius_index = pyray.get_shader_location(light, "max_radius")
+# num_points_index = pyray.get_shader_location(light, "num_points")
+# points_index = pyray.get_shader_location(light, "points")
 
 walls: list[tuple[tuple[int, int], tuple[int, int]]] = [
     ((100, 100), (700, 100)),
@@ -111,39 +112,6 @@ while not pyray.window_should_close():
     else:
         hits = cast_rays((ray_origin.x, ray_origin.y), walls, 360)
 
-    # pyray.set_shader_value(
-    # light,
-    # light_pos_index,
-    # pyray.Vector2(ray_origin.x, ray_origin.y),
-    # pyray.SHADER_UNIFORM_VEC2,
-    # )
-    #
-    # pyray.set_shader_value(
-    # light,
-    # max_radius_index,
-    # pyray.ffi.new("float *", max_radius),
-    # pyray.SHADER_UNIFORM_FLOAT,
-    # )
-    # pyray.set_shader_value(
-    # light,
-    # num_points_index,
-    # pyray.ffi.new("int *", len(hits)),
-    # pyray.SHADER_UNIFORM_INT,
-    # )
-    # if hits:
-    # flat_hits = [coord for hit in hits for coord in hit]
-    # arr = pyray.ffi.new("float[]", flat_hits)
-    # pyray.set_shader_value(
-    # light,
-    # points_index,
-    # arr,
-    # pyray.SHADER_UNIFORM_VEC2,
-    # )
-
-    # pyray.begin_shader_mode(light)
-    # pyray.draw_rectangle(0, 0, WIDTH, HEIGHT, pyray.WHITE)
-    # pyray.end_shader_mode()
-
     pyray.begin_drawing()
     pyray.clear_background(pyray.BLACK)
 
@@ -161,16 +129,6 @@ while not pyray.window_should_close():
             )
             pyray.draw_circle(int(hit[0]), int(hit[1]), 2, pyray.RED)
 
-    # for i in range(steps, 0, -1):
-    # radius = int(max_radius * i / steps)
-    # alpha = int(255 * (i / steps) * 0.2)
-    # pyray.draw_circle(
-    # int(ray_origin.x),
-    # int(ray_origin.y),
-    # radius,
-    # pyray.Color(255, 255, 200, alpha),
-    # )
-
     pyray.draw_rectangle(squareModeX, squareModeY, 195, 50, squareModeColor)
     pyray.draw_text("Place a square ", squareModeX + 20, squareModeY + 15, 20, pyray.WHITE)
 
@@ -183,7 +141,7 @@ while not pyray.window_should_close():
         if pyray.is_mouse_button_pressed(pyray.MOUSE_LEFT_BUTTON):
             if not squareMode:
                 squareMode = True
-                squareModeColor = pyray.BROWN
+                squareModeColor = pyray.GRAY
                 ok = False
             else:
                 squareMode = False
@@ -227,5 +185,5 @@ while not pyray.window_should_close():
     pyray.end_drawing()
 
 pyray.close_window()
-pyray.unload_sound(glassBreak)
+pyray.unload_sound(glassBreak) # obsolete
 pyray.close_audio_device()
